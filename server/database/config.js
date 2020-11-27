@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const dbConection = () => {
     mongooseOptions = {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true
     };
-    mongoose.connect(process.env.DB_CNN, mongooseOptions, (err) => {
+    mongoose.connect(process.env.DB_LCNN, mongooseOptions, (err) => {
         if (err) {
             return console.log(err);
         }
-        console.log('base de datso online');
+        console.log('base de datos online');
     });
 }
 
