@@ -25,6 +25,11 @@ const usuarioSchema = new Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    activo: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 });
 
@@ -34,4 +39,4 @@ usuarioSchema.method('toJSON', function(){
     return object
 });
 
-module.exports = model('Usuarios', usuarioSchema);
+module.exports = model('usuarios', usuarioSchema);

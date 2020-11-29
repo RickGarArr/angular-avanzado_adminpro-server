@@ -4,7 +4,8 @@ const dbConection = () => {
     mongooseOptions = {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useFindAndModify:true
     };
     mongoose.connect(process.env.DB_LCNN, mongooseOptions, (err) => {
         if (err) {

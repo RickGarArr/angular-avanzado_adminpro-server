@@ -4,12 +4,22 @@ const bcrypt = require('bcrypt');
 const { generarJWT } = require('../helpers/jwt.helper');
 
 const getUsuarios =  async (req, res) => {
-    const usuarios =  await Usuario.find({}, 'nombre email role google');
-    const uid = req.uid;
+    const desde = Number(req.query.desde) || 0;
+    const hasta = Number(req.query.hasta) || 5;
+    const mostrnado = hasta - desde;
+
+    const [ usuarios, total ] = await Promise.all([
+        Usuario.find().skip(desde).limit(hasta).exec(),
+        Usuario.countDocuments()
+    ]);
+
     res.json({
         ok: true,
-        usuarios,
-        uid
+        total,
+        mostrnado,
+        desde,
+        hasta,
+        usuarios
     });
 }
 const crearUsuario = async (req, res = response) => {
@@ -114,10 +124,30 @@ const borrarUsuario = async (req, res) => {
     }
 }
 
+const desactivarUsuario = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const usuarioDB = await Usuario.findByIdAndUpdate(id, { activo: false}, {new: true});
+        if (!usuarioDB) {
+            return res.status(500).json({
+                ok: false,
+                msg: 'Error, el Usuario no existe'
+            });
+        }
+        res.json({
+            ok: true,
+            msg: usuarioDB
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 module.exports = {
     getUsuarios,
     crearUsuario,
     editarUsuario,
-    borrarUsuario
+    borrarUsuario,
+    desactivarUsuario
 }

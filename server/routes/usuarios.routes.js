@@ -6,7 +6,8 @@ const {
     getUsuarios,
     crearUsuario,
     editarUsuario,
-    borrarUsuario
+    borrarUsuario,
+    desactivarUsuario
 } = require('../controllers/usuarios.controller');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -15,6 +16,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 router.get('/', validarJWT ,getUsuarios );
 
 router.post('/', [
+    validarJWT,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio').not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
@@ -29,6 +31,8 @@ router.put('/:id', [
     validarCampos
 ], editarUsuario );
 
-router.delete('/:id', validarJWT,borrarUsuario)
+// router.delete('/:id', validarJWT, borrarUsuario)
+
+router.delete('/:id', validarJWT, desactivarUsuario)
 
 module.exports = router;
