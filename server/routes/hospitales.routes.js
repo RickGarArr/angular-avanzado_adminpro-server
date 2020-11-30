@@ -6,7 +6,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const {
     getHospitales,
     postHospital,
-    putHospital,
+    updateHospital,
     deleteHospital
 } = require('../controllers/hospitales.controllers');
 
@@ -22,9 +22,13 @@ router.post('/create', [
     validarCampos
 ], postHospital);
 
-router.put('/update', putHospital);
+router.put('/update/:id', [
+    validarJWT,
+    check('nombre','El Nombre del hospital es Necesario').notEmpty(),
+    validarCampos
+], updateHospital);
 
-router.delete('/delete', deleteHospital);
+router.delete('/delete/:id', validarJWT, deleteHospital);
 
 
 module.exports = router;

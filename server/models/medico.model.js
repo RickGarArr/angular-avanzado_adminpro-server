@@ -4,7 +4,8 @@ const medicoSchema= new Schema({
     nombre: { type: String, required: true},
     img: { type: String },
     usuario: { type: Schema.Types.ObjectId, ref: 'usuarios', required: true },
-    hospital: { type: Schema.Types.ObjectId, ref: 'hospitales', required: true }
+    hospital: { type: Schema.Types.ObjectId, ref: 'hospitales', required: true },
+    activo: { type: Boolean, required: true, default: true }
 });
 
 medicoSchema.method('toJSON', function(){

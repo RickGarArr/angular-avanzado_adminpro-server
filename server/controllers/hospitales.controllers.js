@@ -44,21 +44,57 @@ const postHospital = async (req, res = response) => {
     }
 }
 
-const putHospital = (req, res = response) => {
-    res.json({
-        ok: true, msg: 'Put Hospital'
-    });
+const updateHospital = async (req, res = response) => {
+    try {
+        const id = req.params.id;
+        const uid = req.uid;
+        const hospitalDB = await Hospital.findById(id);
+        if (!hospitalDB) {
+            res.status(500).json({
+                msg: 'No existe el hospital'
+            });    
+        }
+        const cambiosHospital = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(id, cambiosHospital, {new: true});
+        res.json({
+            ok: true,
+            hospital: hospitalActualizado
+        }); 
+    } catch (error) {
+        console.log(error);
+        res.json({
+            msg: 'Hable con el administrador'
+        });
+    }
 }
 
-const deleteHospital = (req, res = response) => {
-    res.json({
-        ok: true, msg: 'delete Hospital'
-    });
+const deleteHospital = async (req, res = response) => {
+    try {
+        const id = req.params.id;
+        const hospitalDB = await Hospital.findByIdAndUpdate(id, {activo: false}, {new: true});
+        if (!hospitalDB) {
+            res.status(500).json({
+                ok: false,
+                msg: 'No existe el hospital'
+            });    
+        }
+        res.json({
+            ok: true,
+            hospitalDB
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
+
 
 module.exports = {
     getHospitales,
     postHospital,
-    putHospital,
+    updateHospital,
     deleteHospital
 }

@@ -12,6 +12,11 @@ const hospitalSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId,
         ref: 'usuarios'
+    },
+    activo: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 }, { collection: 'hospitales'});
 
